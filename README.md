@@ -1,19 +1,8 @@
-Bash CGI Example
+Bash + Nginx CGI Example
 ================
 
-Development server
-------------------
-Quickly get up an running using
-[Python's CGIHTTPServer](http://docs.python.org/2/library/cgihttpserver.html):
+> Note: A pervious version of this README mentioned [Python's CGIHTTPServer ver.2](http://docs.python.org/2/library/cgihttpserver.html), which is out of date. CGIHTTPServer is actually not needed for a this example at all.
 
-    python -m CGIHTTPServer
-
-Caveats:
-  - scripts need to be placed in a sub-folder named `cgi-bin/` or `htbin/`
-  - every response gets the status **200 Script output follows**
-
-Nginx
------
 As [Nginx](http://nginx.org/) only supports FastCGI out of the box,
 we also need to install [fcgiwrap](https://github.com/gnosek/fcgiwrap).
 
@@ -33,19 +22,21 @@ server {
         index index.html index.htm;
     }
 
-    location ~ ^/cgi {
-        root /srv/my_cgi_app;
-        rewrite ^/cgi/(.*) /$1 break;
+    location ~ ^/cgi-bin {
+        root /srv/cgi-bin;
+        rewrite ^/cgi-bin/(.*) /$1 break;
 
         include fastcgi_params;
         fastcgi_pass unix:/var/run/fcgiwrap.socket;
-        fastcgi_param SCRIPT_FILENAME /srv/my_cgi_app$fastcgi_script_name;
+        fastcgi_param SCRIPT_FILENAME /srv/cgi-bin$fastcgi_script_name;
     }
 }
 ```
 
-Change the **root** and **fastcgi_param** lines to a directory containing CGI
+If necessary, change the **root** and **fastcgi_param** lines to a directory containing CGI
 scripts, e.g. the `cgi-bin/` dir in this repository.
+
+Run `sudo chmod +x /srv/cgi-bin/*` so the scripts will execute.
 
 If you are a control freak and run `fcgiwrap` manually,
 be sure to change **fastcgi_pass** accordingly. The path listed in the example
