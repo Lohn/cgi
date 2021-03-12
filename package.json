@@ -1,7 +1,7 @@
 {
   "name": "httplib",
   "version": "0.0.1",
-  "description": "A pure Shell library to use in CGI scripts",
+  "description": "A pure Shell library to use in CGI scripts (based on Bashlib)",
   "install": "make install",
   "scripts": [ "lib/httplib.sh" ],
   "dependencies": { 
