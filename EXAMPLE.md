@@ -1,15 +1,16 @@
+# Example Bash CGI script
+
+```
 #!/bin/bash
-#
-# Example Bash CGI script.
 #
 # Caveat: Remember the empty line after echoing headers
 #
 
-# httputils creates the associative arrays POST_PARAMS and GET_PARAMS
+# httplib creates the associative arrays POST_PARAMS and GET_PARAMS
 if [[ "$SCRIPT_FILENAME" ]]; then
-  . "$(dirname $SCRIPT_FILENAME)/httputils"
+  . "$(dirname $SCRIPT_FILENAME)/httplib"
 else
-  . "$(dirname $(pwd)$SCRIPT_NAME)/httputils"
+  . "$(dirname $(pwd)$SCRIPT_NAME)/httplib"
 fi
 
 POST_vars_to_str() {
@@ -42,7 +43,7 @@ JSON
 }
 
 # Print out available ENV vars
-#/usr/bin/env
+/usr/bin/env
 
 # Common headers goes here
 echo "Content-Type: application/json"
@@ -59,3 +60,4 @@ case $REQUEST_METHOD in
     exit 0
     ;;
 esac
+```
